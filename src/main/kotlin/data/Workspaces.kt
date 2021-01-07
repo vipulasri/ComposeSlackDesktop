@@ -28,12 +28,3 @@ val workspaces = listOf(
         image = "mutualmobile.png"
     )
 )
-
-val options = listOf(
-    "Threads",
-    "All DMs",
-    "Mentions & reactions",
-    "Saved items",
-    "Channels",
-    "Direct messages"
-)

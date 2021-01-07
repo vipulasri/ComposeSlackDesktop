@@ -88,13 +88,25 @@ private fun InfoOptions() {
         items = options,
         modifier = Modifier.padding(15.dp),
     ) { option ->
-        Text(
-            text = option,
-            color = Color.LightGray,
-            style = MaterialTheme.typography.body2.copy(
-                fontWeight = FontWeight.Light
+        Row {
+            Image(
+                bitmap = imageFromResource(option.image),
+                modifier = Modifier.preferredSize(15.dp),
+                colorFilter = ColorFilter.tint(
+                    color = Color.LightGray
+                )
             )
-        )
+            Spacer(
+                modifier = Modifier.width(10.dp)
+            )
+            Text(
+                text = option.name,
+                color = Color.LightGray,
+                style = MaterialTheme.typography.body2.copy(
+                    fontWeight = FontWeight.Light
+                )
+            )
+        }
         Spacer(
             modifier = Modifier.height(10.dp)
         )
