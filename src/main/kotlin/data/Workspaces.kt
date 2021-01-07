@@ -14,17 +14,17 @@ val workspaces = listOf(
     ),
     Workspace(
         id = 2,
-        name = "Mutual Mobile",
-        image = "mutualmobile.png"
+        name = "Blrdroid",
+        image = "blrdroid.png"
     ),
     Workspace(
         id = 3,
-        name = "Mutual Mobile",
-        image = "mutualmobile.png"
+        name = "GDG Hyderabad",
+        image = "gdghyd.png"
     ),
     Workspace(
         id = 4,
-        name = "Mutual Mobile",
-        image = "mutualmobile.png"
+        name = "Kotlinlang",
+        image = "kotlin.png"
     )
 )

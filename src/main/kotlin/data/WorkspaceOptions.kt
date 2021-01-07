@@ -5,7 +5,8 @@ import Icons
 data class WorkspaceOption(
     val id: Int,
     val name: String,
-    val image: String
+    val image: String,
+    val channels: List<Channel> = arrayListOf()
 )
 
 val options = listOf(
@@ -32,6 +33,33 @@ val options = listOf(
     WorkspaceOption(
         id = 5,
         name = "Channels",
-        image = Icons.directMessage
+        image = Icons.caretDown,
+        channels = listOf(
+            Channel(
+                1,
+                "announcements",
+                Icons.hash
+            ),
+            Channel(
+                2,
+                "intro",
+                Icons.hash
+            ),
+            Channel(
+                3,
+                "general",
+                Icons.hash
+            ),
+            Channel(
+                4,
+                "help",
+                Icons.hash
+            ),
+            Channel(
+                5,
+                "random",
+                Icons.hash
+            )
+        )
     ),
 )

@@ -1,10 +1,7 @@
 package ui
 
 import Icons
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.CircleShape
@@ -12,6 +9,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +20,7 @@ import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import data.Workspace
+import data.WorkspaceOption
 import data.options
 import theme.divider
 
@@ -88,27 +88,77 @@ private fun InfoOptions() {
         items = options,
         modifier = Modifier.padding(15.dp),
     ) { option ->
-        Row {
-            Image(
-                bitmap = imageFromResource(option.image),
-                modifier = Modifier.preferredSize(15.dp),
-                colorFilter = ColorFilter.tint(
-                    color = Color.LightGray
-                )
-            )
-            Spacer(
-                modifier = Modifier.width(10.dp)
-            )
-            Text(
-                text = option.name,
-                color = Color.LightGray,
-                style = MaterialTheme.typography.body2.copy(
-                    fontWeight = FontWeight.Light
-                )
-            )
-        }
+        Option(option)
         Spacer(
             modifier = Modifier.height(10.dp)
+        )
+    }
+}
+
+@Composable
+private fun Option(option: WorkspaceOption) {
+    val isItemsExpanded = remember { mutableStateOf(false) }
+    Column {
+
+        val iconImage = if (option.channels.isNotEmpty()) {
+            if (isItemsExpanded.value) Icons.caretUp else Icons.caretDown
+        } else option.image
+
+        IconAndTextView(
+            modifier = Modifier
+                .clickable(indication = null) {
+                    if (option.channels.isNotEmpty()) {
+                        isItemsExpanded.value = !isItemsExpanded.value
+                    }
+                },
+            image = iconImage,
+            name = option.name
+        )
+
+        if (isItemsExpanded.value) {
+            Spacer(
+                modifier = Modifier.height(10.dp)
+            )
+            option.channels.forEach { channel ->
+                IconAndTextView(
+                    modifier = Modifier.padding(horizontal = 15.dp),
+                    image = channel.image,
+                    name = channel.name
+                )
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun IconAndTextView(
+    modifier: Modifier = Modifier,
+    image: String,
+    name: String
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            bitmap = imageFromResource(image),
+            modifier = Modifier.preferredSize(15.dp),
+            colorFilter = ColorFilter.tint(
+                color = Color.LightGray
+            )
+        )
+        Spacer(
+            modifier = Modifier.width(10.dp)
+        )
+        Text(
+            text = name,
+            color = Color.LightGray,
+            style = MaterialTheme.typography.body2.copy(
+                fontWeight = FontWeight.Light
+            )
         )
     }
 }

@@ -31,7 +31,13 @@ private fun SlackApp() {
             color = MaterialTheme.colors.surface
         ).fillMaxSize()
     ) {
-        SlackWorkSpacesBar()
-        SlackWorkspaceInfoBar(workspaces.first())
+        val selectedWorkspace = remember { mutableStateOf(workspaces.first()) }
+        SlackWorkSpacesBar(
+            workspaces,
+            selectedWorkspace.value,
+        ) {
+            selectedWorkspace.value = it
+        }
+        SlackWorkspaceInfoBar(selectedWorkspace.value)
     }
 }

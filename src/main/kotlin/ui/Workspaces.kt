@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,12 +13,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.unit.dp
-import data.workspaces
+import data.Workspace
 import theme.divider
 
 @Composable
-fun SlackWorkSpacesBar() {
-    val selectedWorkspaceId = remember { mutableStateOf(workspaces.first().id) }
+fun SlackWorkSpacesBar(
+    workspaces: List<Workspace>,
+    selectedWorkspace: Workspace,
+    onWorkspaceSelected: (workspace: Workspace) -> Unit
+) {
     LazyColumnFor(
         items = workspaces,
         modifier = Modifier
@@ -38,7 +39,7 @@ fun SlackWorkSpacesBar() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) { workspace ->
         // border width change will not work, as internally 0.dp it defaults to 1.dp
-        val borderColor = if (selectedWorkspaceId.value == workspace.id) Color.White else Color.Transparent
+        val borderColor = if (selectedWorkspace.id == workspace.id) Color.White else Color.Transparent
         Box(
             modifier = Modifier
                 .border(
@@ -52,7 +53,7 @@ fun SlackWorkSpacesBar() {
                     .padding(6.dp)
                     .clip(RoundedCornerShape(20))
                     .clickable {
-                        selectedWorkspaceId.value = workspace.id
+                        onWorkspaceSelected.invoke(workspace)
                     },
                 bitmap = imageFromResource(workspace.image)
             )
