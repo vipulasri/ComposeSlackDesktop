@@ -2,11 +2,17 @@ package data
 
 import Icons
 
+sealed class WorkspaceOptionType {
+    object General : WorkspaceOptionType()
+    class Channel(val items: List<data.Channel>) : WorkspaceOptionType()
+    class DirectMessage(val items: List<data.DirectMessage>) : WorkspaceOptionType()
+}
+
 data class WorkspaceOption(
     val id: Int,
     val name: String,
     val image: String,
-    val channels: List<Channel> = arrayListOf()
+    val type: WorkspaceOptionType = WorkspaceOptionType.General
 )
 
 val options = listOf(
@@ -34,32 +40,16 @@ val options = listOf(
         id = 5,
         name = "Channels",
         image = Icons.caretDown,
-        channels = listOf(
-            Channel(
-                1,
-                "announcements",
-                Icons.hash
-            ),
-            Channel(
-                2,
-                "intro",
-                Icons.hash
-            ),
-            Channel(
-                3,
-                "general",
-                Icons.hash
-            ),
-            Channel(
-                4,
-                "help",
-                Icons.hash
-            ),
-            Channel(
-                5,
-                "random",
-                Icons.hash
-            )
+        type = WorkspaceOptionType.Channel(
+            items = channels
+        )
+    ),
+    WorkspaceOption(
+        id = 6,
+        name = "Direct messages",
+        image = Icons.caretDown,
+        type = WorkspaceOptionType.DirectMessage(
+            items = directMessages
         )
     ),
 )
