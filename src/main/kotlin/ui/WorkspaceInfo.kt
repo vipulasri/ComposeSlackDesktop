@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import data.*
 import theme.LatoFontBoldFamily
 import theme.divider
+import theme.optionSelected
 
 @Composable
 fun SlackWorkspaceInfoBar(workspace: Workspace) {
@@ -40,100 +41,115 @@ fun SlackWorkspaceInfoBar(workspace: Workspace) {
             )
             .fillMaxHeight()
     ) {
-        Row(
-            modifier = Modifier.padding(15.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = workspace.name,
-                color = Color.White,
-                style = MaterialTheme.typography.subtitle1.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = LatoFontBoldFamily
-                )
-            )
-            Spacer(
-                modifier = Modifier.width(10.dp)
-            )
-            Image(
-                bitmap = imageFromResource(Icons.arrowDown),
-                modifier = Modifier.preferredSize(8.dp),
-                colorFilter = ColorFilter.tint(
-                    color = Color.White
-                )
-            )
-            Spacer(
-                modifier = Modifier.weight(1f)
-            )
-            Box(
-                modifier = Modifier.preferredSize(35.dp)
-                    .background(
-                        color = Color.White,
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    bitmap = imageFromResource(Icons.edit),
-                    modifier = Modifier.preferredSize(15.dp),
-                    colorFilter = ColorFilter.tint(
-                        color = Color.Black
-                    )
-                )
-            }
-        }
+        InfoHeader(workspace)
         Divider(color = divider)
         InfoOptions()
     }
 }
 
 @Composable
-private fun InfoOptions() {
-    LazyColumnFor(
-        items = options,
+private fun InfoHeader(workspace: Workspace) {
+    Row(
         modifier = Modifier.padding(15.dp),
-    ) { option ->
-        Option(option)
-        Spacer(
-            modifier = Modifier.height(10.dp)
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = workspace.name,
+            color = Color.White,
+            style = MaterialTheme.typography.subtitle2.copy(
+                fontWeight = FontWeight.Bold,
+                fontFamily = LatoFontBoldFamily
+            )
         )
+        Spacer(
+            modifier = Modifier.width(10.dp)
+        )
+        Image(
+            bitmap = imageFromResource(Icons.arrowDown),
+            modifier = Modifier.preferredSize(8.dp),
+            colorFilter = ColorFilter.tint(
+                color = Color.White
+            )
+        )
+        Spacer(
+            modifier = Modifier.weight(1f)
+        )
+        Box(
+            modifier = Modifier.preferredSize(35.dp)
+                .background(
+                    color = Color.White,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                bitmap = imageFromResource(Icons.edit),
+                modifier = Modifier.preferredSize(15.dp),
+                colorFilter = ColorFilter.tint(
+                    color = Color.Black
+                )
+            )
+        }
     }
 }
 
 @Composable
-private fun Option(option: WorkspaceOption) {
-    val isItemsExpanded = remember { mutableStateOf(true) }
+private fun InfoOptions() {
+    val selectedOption = remember { mutableStateOf(options.first().name) }
+    LazyColumnFor(
+        items = options,
+        modifier = Modifier.fillMaxWidth(),
+    ) { option ->
+        Option(option, selectedOption.value, onOptionClicked = {
+            selectedOption.value = it
+        })
+    }
+}
+
+@Composable
+private fun Option(
+    option: WorkspaceOption,
+    selectedOptionName: String,
+    onOptionClicked: (optionName: String) -> Unit
+) {
+    val optionWithItems = option.type != WorkspaceOptionType.General
+    val itemsExpanded = remember { mutableStateOf(optionWithItems) }
     Column {
 
-        val iconImage = if (option.type != WorkspaceOptionType.General) {
-            if (isItemsExpanded.value) Icons.caretUp else Icons.caretDown
+        val iconImage = if (optionWithItems) {
+            if (itemsExpanded.value) Icons.caretUp else Icons.caretDown
         } else option.image
+
+        val backgroundColor = if (selectedOptionName == option.name) optionSelected else Color.Transparent
 
         IconAndTextView(
             modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = backgroundColor
+                )
                 .clickable(indication = null) {
-                    if (option.type != WorkspaceOptionType.General) {
-                        isItemsExpanded.value = !isItemsExpanded.value
+                    if (optionWithItems) {
+                        itemsExpanded.value = !itemsExpanded.value
+                    } else {
+                        onOptionClicked.invoke(option.name)
                     }
                 },
             image = iconImage,
-            name = option.name
+            name = option.name,
+            isSelected = selectedOptionName == option.name
         )
 
-        if (isItemsExpanded.value) {
-            Spacer(
-                modifier = Modifier.height(10.dp)
-            )
-
+        if (itemsExpanded.value) {
             when (option.type) {
                 is WorkspaceOptionType.General -> {
                     // do nothing
                 }
                 is WorkspaceOptionType.Channel -> {
-                    ShowChannels(option.type.items)
+                    ShowChannels(option.type.items, selectedOptionName, onOptionClicked)
                 }
                 is WorkspaceOptionType.DirectMessage -> {
-                    ShowDirectMessages(option.type.items)
+                    ShowDirectMessages(option.type.items, selectedOptionName, onOptionClicked)
                 }
             }
         }
@@ -141,25 +157,49 @@ private fun Option(option: WorkspaceOption) {
 }
 
 @Composable
-private fun ShowChannels(channels: List<Channel>) {
+private fun ShowChannels(
+    channels: List<Channel>,
+    selectedOptionName: String,
+    onOptionClicked: (optionName: String) -> Unit
+) {
     channels.forEach { channel ->
+        val backgroundColor = if (selectedOptionName == channel.name) optionSelected else Color.Transparent
+
         IconAndTextView(
-            modifier = Modifier.padding(horizontal = 15.dp),
+            modifier = Modifier.padding(horizontal = 15.dp)
+                .background(
+                    color = backgroundColor
+                )
+                .fillMaxWidth()
+                .clickable {
+                    onOptionClicked.invoke(channel.name)
+                },
             image = channel.image,
-            name = channel.name
-        )
-        Spacer(
-            modifier = Modifier.height(10.dp)
+            name = channel.name,
+            isSelected = selectedOptionName == channel.name
         )
     }
 }
 
 @Composable
-private fun ShowDirectMessages(messages: List<DirectMessage>) {
-    messages.forEach {
-        DirectMessageView(it)
-        Spacer(
-            modifier = Modifier.height(10.dp)
+private fun ShowDirectMessages(
+    messages: List<DirectMessage>,
+    selectedOptionName: String,
+    onOptionClicked: (optionName: String) -> Unit
+) {
+    messages.forEach { message ->
+        val backgroundColor = if (selectedOptionName == message.name) optionSelected else Color.Transparent
+        DirectMessageView(
+            modifier = Modifier
+                .background(
+                    color = backgroundColor
+                )
+                .fillMaxWidth()
+                .clickable {
+                    onOptionClicked.invoke(message.name)
+                },
+            directMessage = message,
+            isSelected = selectedOptionName == message.name
         )
     }
 }
@@ -168,17 +208,20 @@ private fun ShowDirectMessages(messages: List<DirectMessage>) {
 private fun IconAndTextView(
     modifier: Modifier = Modifier,
     image: String,
-    name: String
+    name: String,
+    isSelected: Boolean = false
 ) {
+    val color = if (isSelected) Color.White else Color.LightGray
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = 15.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             bitmap = imageFromResource(image),
             modifier = Modifier.preferredSize(15.dp),
             colorFilter = ColorFilter.tint(
-                color = Color.LightGray
+                color = color
             )
         )
         Spacer(
@@ -186,18 +229,24 @@ private fun IconAndTextView(
         )
         Text(
             text = name,
-            color = Color.LightGray,
+            color = color,
             style = MaterialTheme.typography.body2.copy(
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Normal
             )
         )
     }
 }
 
 @Composable
-private fun DirectMessageView(directMessage: DirectMessage) {
+private fun DirectMessageView(
+    modifier: Modifier = Modifier,
+    directMessage: DirectMessage,
+    isSelected: Boolean = false
+) {
+    val color = if (isSelected) Color.White else Color.LightGray
     Row(
-        modifier = Modifier.padding(start = 10.dp),
+        modifier = modifier
+            .padding(horizontal = 25.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box {
@@ -217,9 +266,9 @@ private fun DirectMessageView(directMessage: DirectMessage) {
         )
         Text(
             text = directMessage.name,
-            color = Color.LightGray,
+            color = color,
             style = MaterialTheme.typography.body2.copy(
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Normal
             )
         )
     }

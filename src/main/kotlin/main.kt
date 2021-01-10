@@ -39,5 +39,6 @@ private fun SlackApp() {
             selectedWorkspace.value = it
         }
         SlackWorkspaceInfoBar(selectedWorkspace.value)
+
     }
 }
