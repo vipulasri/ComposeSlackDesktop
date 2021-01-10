@@ -13,6 +13,10 @@ val LatoFontFamily = fontFamily(
     font(alias = "Lato-Bold", path = "fonts/Lato-Bold.ttf", weight = FontWeight.Bold)
 )
 
+val LatoFontBoldFamily = fontFamily(
+    font(alias = "Lato-Bold", path = "fonts/Lato-Bold.ttf", weight = FontWeight.Bold)
+)
+
 val typography = Typography(
     defaultFontFamily = LatoFontFamily,
     h1 = TextStyle(
@@ -41,7 +45,7 @@ val typography = Typography(
         letterSpacing = 0.sp
     ),
     h6 = TextStyle(
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         letterSpacing = 0.sp
     ),
@@ -51,7 +55,7 @@ val typography = Typography(
         letterSpacing = 0.15.sp
     ),
     subtitle2 = TextStyle(
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         letterSpacing = 0.1.sp
     ),
@@ -66,7 +70,7 @@ val typography = Typography(
         letterSpacing = 0.25.sp
     ),
     button = TextStyle(
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         letterSpacing = 0.25.sp
     ),

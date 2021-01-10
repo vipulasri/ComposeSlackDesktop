@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import data.*
+import theme.LatoFontBoldFamily
 import theme.divider
 
 @Composable
@@ -45,7 +46,11 @@ fun SlackWorkspaceInfoBar(workspace: Workspace) {
         ) {
             Text(
                 text = workspace.name,
-                color = Color.White
+                color = Color.White,
+                style = MaterialTheme.typography.subtitle1.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = LatoFontBoldFamily
+                )
             )
             Spacer(
                 modifier = Modifier.width(10.dp)
@@ -97,7 +102,7 @@ private fun InfoOptions() {
 
 @Composable
 private fun Option(option: WorkspaceOption) {
-    val isItemsExpanded = remember { mutableStateOf(false) }
+    val isItemsExpanded = remember { mutableStateOf(true) }
     Column {
 
         val iconImage = if (option.type != WorkspaceOptionType.General) {

@@ -9,7 +9,7 @@ data class Workspace(
 val workspaces = listOf(
     Workspace(
         id = 1,
-        name = "Mutual Mobile",
+        name = "mutualmobile",
         image = "mutualmobile.png"
     ),
     Workspace(
