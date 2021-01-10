@@ -44,6 +44,9 @@ fun SlackWorkspaceInfoBar(workspace: Workspace) {
     ) {
         InfoHeader(workspace)
         Divider(color = divider)
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
         InfoOptions()
     }
 }
@@ -118,7 +121,7 @@ private fun Option(
     Column {
 
         val iconImage = if (optionWithItems) {
-            if (itemsExpanded.value) Icons.caretUp else Icons.caretDown
+            if (itemsExpanded.value) Icons.caretDown else Icons.caretRight
         } else option.image
 
         val backgroundColor = if (selectedOptionName == option.name) optionSelected else Color.Transparent
@@ -222,7 +225,7 @@ private fun IconAndTextView(
     ) {
         Image(
             bitmap = imageFromResource(image),
-            modifier = Modifier.preferredSize(15.dp),
+            modifier = Modifier.preferredSize(16.dp),
             colorFilter = ColorFilter.tint(
                 color = color
             )

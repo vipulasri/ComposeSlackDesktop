@@ -38,6 +38,11 @@ val options = listOf(
     ),
     WorkspaceOption(
         id = 5,
+        name = "More",
+        image = Icons.verticalDots
+    ),
+    WorkspaceOption(
+        id = 6,
         name = "Channels",
         image = Icons.caretDown,
         type = WorkspaceOptionType.Channel(
@@ -45,7 +50,7 @@ val options = listOf(
         )
     ),
     WorkspaceOption(
-        id = 6,
+        id = 7,
         name = "Direct messages",
         image = Icons.caretDown,
         type = WorkspaceOptionType.DirectMessage(

@@ -8,5 +8,7 @@ object Icons {
     val bookmark = "bookmark.png"
     val caretUp = "caret_up.png"
     val caretDown = "caret_down.png"
+    val caretRight = "caret_right.png"
     val hash = "hash.png"
+    val verticalDots = "vertical.png"
 }
