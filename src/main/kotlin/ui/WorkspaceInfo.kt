@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import data.*
 import theme.LatoFontBoldFamily
@@ -166,7 +167,7 @@ private fun ShowChannels(
         val backgroundColor = if (selectedOptionName == channel.name) optionSelected else Color.Transparent
 
         IconAndTextView(
-            modifier = Modifier.padding(horizontal = 15.dp)
+            modifier = Modifier
                 .background(
                     color = backgroundColor
                 )
@@ -174,6 +175,7 @@ private fun ShowChannels(
                 .clickable {
                     onOptionClicked.invoke(channel.name)
                 },
+            horizontalPadding = 15.dp,
             image = channel.image,
             name = channel.name,
             isSelected = selectedOptionName == channel.name
@@ -207,6 +209,7 @@ private fun ShowDirectMessages(
 @Composable
 private fun IconAndTextView(
     modifier: Modifier = Modifier,
+    horizontalPadding: Dp = 0.dp,
     image: String,
     name: String,
     isSelected: Boolean = false
@@ -214,7 +217,7 @@ private fun IconAndTextView(
     val color = if (isSelected) Color.White else Color.LightGray
     Row(
         modifier = modifier
-            .padding(horizontal = 15.dp, vertical = 6.dp),
+            .padding(horizontal = horizontalPadding + 15.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
