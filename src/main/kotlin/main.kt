@@ -1,11 +1,14 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
-import data.workspaces
+import data.WorkspacesRepository
 import theme.DarkColorPalette
 import theme.LightColorPalette
 import theme.typography
@@ -26,11 +29,12 @@ fun main() = Window(
 
 @Composable
 private fun SlackApp() {
-    Row (
+    Row(
         modifier = Modifier.background(
             color = MaterialTheme.colors.surface
         ).fillMaxSize()
     ) {
+        val workspaces = WorkspacesRepository.workspaces
         val selectedWorkspace = remember { mutableStateOf(workspaces.first()) }
         SlackWorkSpacesBar(
             workspaces,

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.unit.dp
-import data.Workspace
+import model.Workspace
 import theme.divider
 
 @Composable

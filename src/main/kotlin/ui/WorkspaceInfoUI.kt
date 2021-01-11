@@ -21,7 +21,8 @@ import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import data.*
+import data.WorkspaceOptionsRepository
+import model.*
 import theme.LatoFontBoldFamily
 import theme.divider
 import theme.optionSelected
@@ -98,28 +99,35 @@ private fun InfoHeader(workspace: Workspace) {
 
 @Composable
 private fun InfoOptions() {
-    val selectedOption = remember { mutableStateOf(uiModel.general.first()) }
+    val options = WorkspaceOptionsRepository.options
+    val selectedOption = remember { mutableStateOf(options.general.first()) }
     ScrollableColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         GeneralOptionGroup(
-            uiModel.general,
+            options.general,
             selectedOption.value,
             onOptionClicked = {
                 selectedOption.value = it
             }
+        )
+        Spacer(
+            modifier = Modifier.height(10.dp)
         )
         DropDownOptionGroup(
             "Channels",
-            uiModel.channels,
+            options.channels,
             selectedOption.value,
             onOptionClicked = {
                 selectedOption.value = it
             }
         )
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
         DropDownOptionGroup(
             "Direct messages",
-            uiModel.messages,
+            options.messages,
             selectedOption.value,
             onOptionClicked = {
                 selectedOption.value = it
