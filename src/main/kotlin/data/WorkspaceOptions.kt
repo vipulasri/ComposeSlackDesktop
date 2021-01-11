@@ -4,18 +4,24 @@ import Icons
 
 sealed class WorkspaceOptionType {
     object General : WorkspaceOptionType()
-    class Channel(val items: List<data.Channel>) : WorkspaceOptionType()
-    class DirectMessage(val items: List<data.DirectMessage>) : WorkspaceOptionType()
+    object Channel : WorkspaceOptionType()
+    object DirectMessage : WorkspaceOptionType()
 }
 
-data class WorkspaceOption(
+open class WorkspaceOption(
     val id: Int,
     val name: String,
     val image: String,
     val type: WorkspaceOptionType = WorkspaceOptionType.General
 )
 
-val options = listOf(
+data class WorkspaceOptionUiModel(
+    val general: List<WorkspaceOption>,
+    val channels: List<WorkspaceOption>,
+    val messages: List<WorkspaceOption>
+)
+
+private val generalOptions = listOf(
     WorkspaceOption(
         id = 1,
         name = "Threads",
@@ -41,20 +47,10 @@ val options = listOf(
         name = "More",
         image = Icons.verticalDots
     ),
-    WorkspaceOption(
-        id = 6,
-        name = "Channels",
-        image = Icons.caretDown,
-        type = WorkspaceOptionType.Channel(
-            items = channels
-        )
-    ),
-    WorkspaceOption(
-        id = 7,
-        name = "Direct messages",
-        image = Icons.caretDown,
-        type = WorkspaceOptionType.DirectMessage(
-            items = directMessages
-        )
-    ),
+)
+
+val uiModel = WorkspaceOptionUiModel(
+    general = generalOptions,
+    channels = channels,
+    messages = directMessages
 )

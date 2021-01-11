@@ -3,7 +3,6 @@ package ui
 import Icons
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -99,113 +98,113 @@ private fun InfoHeader(workspace: Workspace) {
 
 @Composable
 private fun InfoOptions() {
-    val selectedOption = remember { mutableStateOf(options.first().name) }
-    LazyColumnFor(
-        items = options,
-        modifier = Modifier.fillMaxWidth(),
-    ) { option ->
-        Option(option, selectedOption.value, onOptionClicked = {
-            selectedOption.value = it
+    val selectedOption = remember { mutableStateOf(uiModel.general.first()) }
+    ScrollableColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        GeneralOptionGroup(
+            uiModel.general,
+            selectedOption.value,
+            onOptionClicked = {
+                selectedOption.value = it
+            }
+        )
+        DropDownOptionGroup(
+            "Channels",
+            uiModel.channels,
+            selectedOption.value,
+            onOptionClicked = {
+                selectedOption.value = it
+            }
+        )
+        DropDownOptionGroup(
+            "Direct messages",
+            uiModel.messages,
+            selectedOption.value,
+            onOptionClicked = {
+                selectedOption.value = it
+            }
+        )
+    }
+}
+
+@Composable
+private fun GeneralOptionGroup(
+    options: List<WorkspaceOption>,
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
+) {
+    options.forEach { option ->
+        GeneralOption(option, selectedOption, onOptionClicked = {
+            onOptionClicked.invoke(it)
         })
     }
 }
 
 @Composable
-private fun Option(
+private fun GeneralOption(
     option: WorkspaceOption,
-    selectedOptionName: String,
-    onOptionClicked: (optionName: String) -> Unit
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
 ) {
-    val optionWithItems = option.type != WorkspaceOptionType.General
-    val itemsExpanded = remember { mutableStateOf(optionWithItems) }
-    Column {
+    val backgroundColor = if (selectedOption == option) optionSelected else Color.Transparent
+    IconAndTextView(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = backgroundColor
+            )
+            .clickable(indication = null) {
+                onOptionClicked.invoke(option)
+            },
+        image = option.image,
+        name = option.name,
+        isSelected = selectedOption == option
+    )
+}
 
-        val iconImage = if (optionWithItems) {
-            if (itemsExpanded.value) Icons.caretDown else Icons.caretRight
-        } else option.image
+@Composable
+private fun DropDownOptionGroup(
+    groupName: String,
+    options: List<WorkspaceOption>,
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
+) {
+    val itemsExpanded = remember { mutableStateOf(true) }
+    val icon = if (itemsExpanded.value) Icons.caretDown else Icons.caretRight
+    IconAndTextView(
+        modifier = Modifier.fillMaxWidth()
+            .clickable(indication = null) {
+                itemsExpanded.value = !itemsExpanded.value
+            },
+        image = icon,
+        name = groupName
+    )
 
-        val backgroundColor = if (selectedOptionName == option.name) optionSelected else Color.Transparent
-
-        IconAndTextView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = backgroundColor
-                )
-                .clickable(indication = null) {
-                    if (optionWithItems) {
-                        itemsExpanded.value = !itemsExpanded.value
-                    } else {
-                        onOptionClicked.invoke(option.name)
-                    }
-                },
-            image = iconImage,
-            name = option.name,
-            isSelected = selectedOptionName == option.name
-        )
-
-        if (itemsExpanded.value) {
+    if (itemsExpanded.value) {
+        options.forEach { option ->
+            val backgroundColor = if (selectedOption == option) optionSelected else Color.Transparent
             when (option.type) {
                 is WorkspaceOptionType.General -> {
-                    // do nothing
                 }
                 is WorkspaceOptionType.Channel -> {
-                    ShowChannels(option.type.items, selectedOptionName, onOptionClicked)
+                    ChannelOption(
+                        option as ChannelOption,
+                        backgroundColor,
+                        selectedOption,
+                        onOptionClicked
+                    )
                 }
                 is WorkspaceOptionType.DirectMessage -> {
-                    ShowDirectMessages(option.type.items, selectedOptionName, onOptionClicked)
+                    DirectMessageOption(
+                        option as DMOption,
+                        backgroundColor,
+                        selectedOption,
+                        onOptionClicked
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun ShowChannels(
-    channels: List<Channel>,
-    selectedOptionName: String,
-    onOptionClicked: (optionName: String) -> Unit
-) {
-    channels.forEach { channel ->
-        val backgroundColor = if (selectedOptionName == channel.name) optionSelected else Color.Transparent
-
-        IconAndTextView(
-            modifier = Modifier
-                .background(
-                    color = backgroundColor
-                )
-                .fillMaxWidth()
-                .clickable {
-                    onOptionClicked.invoke(channel.name)
-                },
-            horizontalPadding = 15.dp,
-            image = channel.image,
-            name = channel.name,
-            isSelected = selectedOptionName == channel.name
-        )
-    }
-}
-
-@Composable
-private fun ShowDirectMessages(
-    messages: List<DirectMessage>,
-    selectedOptionName: String,
-    onOptionClicked: (optionName: String) -> Unit
-) {
-    messages.forEach { message ->
-        val backgroundColor = if (selectedOptionName == message.name) optionSelected else Color.Transparent
-        DirectMessageView(
-            modifier = Modifier
-                .background(
-                    color = backgroundColor
-                )
-                .fillMaxWidth()
-                .clickable {
-                    onOptionClicked.invoke(message.name)
-                },
-            directMessage = message,
-            isSelected = selectedOptionName == message.name
-        )
     }
 }
 
@@ -244,9 +243,53 @@ private fun IconAndTextView(
 }
 
 @Composable
+private fun ChannelOption(
+    channel: ChannelOption,
+    backgroundColor: Color,
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
+) {
+    IconAndTextView(
+        modifier = Modifier
+            .background(
+                color = backgroundColor
+            )
+            .fillMaxWidth()
+            .clickable {
+                onOptionClicked.invoke(channel)
+            },
+        horizontalPadding = 15.dp,
+        image = channel.image,
+        name = channel.name,
+        isSelected = selectedOption == channel
+    )
+}
+
+@Composable
+private fun DirectMessageOption(
+    message: DMOption,
+    backgroundColor: Color,
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
+) {
+    DirectMessageView(
+        modifier = Modifier
+            .background(
+                color = backgroundColor
+            )
+            .fillMaxWidth()
+            .clickable {
+                onOptionClicked.invoke(message)
+            },
+        dmOption = message,
+        isSelected = selectedOption == message
+    )
+}
+
+@Composable
 private fun DirectMessageView(
     modifier: Modifier = Modifier,
-    directMessage: DirectMessage,
+    dmOption: DMOption,
     isSelected: Boolean = false
 ) {
     val color = if (isSelected) Color.White else Color.LightGray
@@ -257,21 +300,21 @@ private fun DirectMessageView(
     ) {
         Box {
             Image(
-                bitmap = imageFromResource(directMessage.image),
+                bitmap = imageFromResource(dmOption.image),
                 modifier = Modifier.preferredSize(20.dp)
                     .clip(
-                        directMessage.isOnline?.let {
+                        dmOption.isOnline?.let {
                             ImageOnlineShape(8.dp)
                         } ?: RoundedCornerShape(4.dp)
                     ),
             )
-            OnlineStatus(directMessage.isOnline)
+            OnlineStatus(dmOption.isOnline)
         }
         Spacer(
             modifier = Modifier.width(10.dp)
         )
         Text(
-            text = directMessage.name,
+            text = dmOption.name,
             color = color,
             style = MaterialTheme.typography.body2.copy(
                 fontWeight = FontWeight.Normal

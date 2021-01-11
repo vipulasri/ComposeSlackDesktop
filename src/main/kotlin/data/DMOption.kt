@@ -1,31 +1,31 @@
 package data
 
-data class DirectMessage(
-    val id: Int,
-    val name: String,
-    val image: String,
+data class DMOption(
+    val _id: Int,
+    val _name: String,
+    val _image: String,
     val isOnline: Boolean? = null
-)
+) : WorkspaceOption(_id, _name, _image, WorkspaceOptionType.DirectMessage)
 
 val directMessages = listOf(
-    DirectMessage(
+    DMOption(
         1,
         "Slackbot",
         "slackbot.png"
     ),
-    DirectMessage(
+    DMOption(
         2,
         "Vipul Asri",
         "people/person_1.jpg",
         isOnline = true
     ),
-    DirectMessage(
+    DMOption(
         3,
         "John Damon",
         "people/person_2.jpg",
         isOnline = true
     ),
-    DirectMessage(
+    DMOption(
         4,
         "Matt Andrews",
         "people/person_3.jpg",

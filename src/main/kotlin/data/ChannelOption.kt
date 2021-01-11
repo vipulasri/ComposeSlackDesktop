@@ -1,33 +1,33 @@
 package data
 
-data class Channel(
-    val id: Int,
-    val name: String,
-    val image: String
-)
+data class ChannelOption(
+    val _id: Int,
+    val _name: String,
+    val _image: String
+) : WorkspaceOption(_id, _name, _image, WorkspaceOptionType.Channel)
 
 val channels = listOf(
-    Channel(
+    ChannelOption(
         1,
         "announcements",
         Icons.hash
     ),
-    Channel(
+    ChannelOption(
         2,
         "intro",
         Icons.hash
     ),
-    Channel(
+    ChannelOption(
         3,
         "general",
         Icons.hash
     ),
-    Channel(
+    ChannelOption(
         4,
         "help",
         Icons.hash
     ),
-    Channel(
+    ChannelOption(
         5,
         "random",
         Icons.hash
