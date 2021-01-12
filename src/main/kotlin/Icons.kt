@@ -1,4 +1,3 @@
-
 object Icons {
     val arrowDown = "arrow_down.png"
     val edit = "ic_edit.png"
@@ -11,4 +10,7 @@ object Icons {
     val caretRight = "caret_right.png"
     val hash = "hash.png"
     val verticalDots = "vertical.png"
+    val info = "info.png"
+    val addPerson = "add_person.png"
+    val call = "call.png"
 }

@@ -21,14 +21,18 @@ import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import data.WorkspaceOptionsRepository
 import model.*
 import theme.LatoFontBoldFamily
+import theme.SlackColors
 import theme.divider
-import theme.optionSelected
 
 @Composable
-fun SlackWorkspaceInfoBar(workspace: Workspace) {
+fun SlackWorkspaceInfoBar(
+    workspace: Workspace,
+    options: WorkspaceOptionUiModel,
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
+) {
     Column(
         modifier = Modifier
             .preferredWidth(250.dp)
@@ -47,14 +51,19 @@ fun SlackWorkspaceInfoBar(workspace: Workspace) {
         Spacer(
             modifier = Modifier.height(10.dp)
         )
-        InfoOptions()
+        InfoOptions(
+            options,
+            selectedOption,
+            onOptionClicked
+        )
     }
 }
 
 @Composable
 private fun InfoHeader(workspace: Workspace) {
     Row(
-        modifier = Modifier.padding(15.dp),
+        modifier = Modifier.preferredHeight(70.dp)
+            .padding(15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -98,18 +107,18 @@ private fun InfoHeader(workspace: Workspace) {
 }
 
 @Composable
-private fun InfoOptions() {
-    val options = WorkspaceOptionsRepository.options
-    val selectedOption = remember { mutableStateOf(options.general.first()) }
+private fun InfoOptions(
+    options: WorkspaceOptionUiModel,
+    selectedOption: WorkspaceOption,
+    onOptionClicked: (option: WorkspaceOption) -> Unit
+) {
     ScrollableColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         GeneralOptionGroup(
             options.general,
-            selectedOption.value,
-            onOptionClicked = {
-                selectedOption.value = it
-            }
+            selectedOption,
+            onOptionClicked
         )
         Spacer(
             modifier = Modifier.height(10.dp)
@@ -117,10 +126,8 @@ private fun InfoOptions() {
         DropDownOptionGroup(
             "Channels",
             options.channels,
-            selectedOption.value,
-            onOptionClicked = {
-                selectedOption.value = it
-            }
+            selectedOption,
+            onOptionClicked
         )
         Spacer(
             modifier = Modifier.height(10.dp)
@@ -128,10 +135,8 @@ private fun InfoOptions() {
         DropDownOptionGroup(
             "Direct messages",
             options.messages,
-            selectedOption.value,
-            onOptionClicked = {
-                selectedOption.value = it
-            }
+            selectedOption,
+            onOptionClicked
         )
     }
 }
@@ -155,7 +160,7 @@ private fun GeneralOption(
     selectedOption: WorkspaceOption,
     onOptionClicked: (option: WorkspaceOption) -> Unit
 ) {
-    val backgroundColor = if (selectedOption == option) optionSelected else Color.Transparent
+    val backgroundColor = if (selectedOption == option) SlackColors.optionSelected else Color.Transparent
     IconAndTextView(
         modifier = Modifier
             .fillMaxWidth()
@@ -191,7 +196,7 @@ private fun DropDownOptionGroup(
 
     if (itemsExpanded.value) {
         options.forEach { option ->
-            val backgroundColor = if (selectedOption == option) optionSelected else Color.Transparent
+            val backgroundColor = if (selectedOption == option) SlackColors.optionSelected else Color.Transparent
             when (option.type) {
                 is WorkspaceOptionType.General -> {
                 }
@@ -342,7 +347,7 @@ private fun BoxScope.OnlineStatus(online: Boolean?) {
 private fun BoxScope.OnlineStatusUi() {
     Box(
         modifier = Modifier.background(
-            color = Color.Green,
+            color = SlackColors.online,
             shape = CircleShape
         ).preferredSize(6.dp).align(Alignment.BottomEnd)
     )
@@ -353,7 +358,7 @@ private fun BoxScope.OfflineStatusUi() {
     Box(
         modifier = Modifier.border(
             width = 1.dp,
-            color = Color.Gray,
+            color = SlackColors.grey,
             shape = CircleShape
         ).preferredSize(6.dp).align(Alignment.BottomEnd)
     )

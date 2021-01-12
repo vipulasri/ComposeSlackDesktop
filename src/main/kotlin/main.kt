@@ -8,10 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
+import data.WorkspaceOptionsRepository
 import data.WorkspacesRepository
 import theme.DarkColorPalette
 import theme.LightColorPalette
 import theme.typography
+import ui.SlackDetailsUi
 import ui.SlackWorkSpacesBar
 import ui.SlackWorkspaceInfoBar
 
@@ -42,7 +44,17 @@ private fun SlackApp() {
         ) {
             selectedWorkspace.value = it
         }
-        SlackWorkspaceInfoBar(selectedWorkspace.value)
 
+        val options = WorkspaceOptionsRepository.options
+        val selectedOption = remember { mutableStateOf(options.general.first()) }
+        SlackWorkspaceInfoBar(
+            workspace = selectedWorkspace.value,
+            options = options,
+            selectedOption = selectedOption.value,
+            onOptionClicked = {
+                selectedOption.value = it
+            }
+        )
+        SlackDetailsUi(selectedOption.value)
     }
 }
