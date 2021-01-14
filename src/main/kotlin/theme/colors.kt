@@ -15,6 +15,7 @@ object SlackColors {
     val online = Color(0xffA7E476)
     val onlineDark = Color(0xff34785C)
     val grey = Color(0xffABABAD)
+    val black = Color(0xff1E2228)
     val reactionBg = Color(0xff232529)
     val optionSelected = Color(0xff5B7AA2)
     val detailsBg = Color(0xff1B1D21)

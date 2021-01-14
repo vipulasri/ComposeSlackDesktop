@@ -19,12 +19,18 @@ import model.ChannelOption
 import model.Post
 import theme.LatoFontBoldFamily
 import theme.SlackColors
+import ui.common.DateDivider
 
 
 @Composable
 fun ChannelDetailsUi(channel: ChannelOption) {
     ChannelDetailsHeader(channel)
-    PostsRepository.posts.forEach { post ->
+    val posts = PostsRepository.posts
+    posts.forEachIndexed { index, post ->
+        if (index == 0 ||
+            (posts[index.minus(1)].createdAt != post.createdAt)) {
+            DateDivider(post.createdAt)
+        }
         PostUi(post)
     }
 }
