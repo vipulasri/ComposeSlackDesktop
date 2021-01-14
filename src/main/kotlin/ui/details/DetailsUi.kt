@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import model.ChannelOption
 import model.DMOption
 import model.WorkspaceOption
 import model.WorkspaceOptionType
@@ -34,7 +35,7 @@ fun SlackDetailsUi(option: WorkspaceOption) {
     ) {
         DetailsHeader(option)
         Divider()
-        PostsUi()
+        ContentUi(option)
     }
 }
 
@@ -56,6 +57,21 @@ private fun DetailsHeader(option: WorkspaceOption) {
             modifier = Modifier.weight(1f)
         )
         HeaderMenu(option)
+    }
+}
+
+@Composable
+private fun ContentUi(option: WorkspaceOption) {
+    when (option.type) {
+        is WorkspaceOptionType.General -> {
+
+        }
+        is WorkspaceOptionType.Channel -> {
+            ChannelDetailsUi(option as ChannelOption)
+        }
+        is WorkspaceOptionType.DirectMessage -> {
+
+        }
     }
 }
 

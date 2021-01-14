@@ -1,9 +1,7 @@
 package data
 
-import model.ChannelOption
-import model.DMOption
-import model.WorkspaceOption
-import model.WorkspaceOptionUiModel
+import Icons
+import model.*
 
 object WorkspaceOptionsRepository {
 
@@ -39,27 +37,37 @@ object WorkspaceOptionsRepository {
         ChannelOption(
             1,
             "announcements",
-            Icons.hash
+            Icons.hash,
+            createdBy = users.first(),
+            createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             2,
             "intro",
-            Icons.hash
+            Icons.hash,
+            createdBy = users.first(),
+            createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             3,
             "general",
-            Icons.hash
+            Icons.hash,
+            createdBy = users.first(),
+            createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             4,
             "help",
-            Icons.hash
+            Icons.hash,
+            createdBy = users.first(),
+            createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             5,
             "random",
-            Icons.hash
+            Icons.hash,
+            createdBy = users.first(),
+            createdAt = System.currentTimeMillis()
         )
     )
 
@@ -72,7 +80,7 @@ object WorkspaceOptionsRepository {
         DMOption(
             2,
             "Vipul Asri",
-            "people/person_1.jpg",
+            "people/vipulasri.jpg",
             isOnline = true
         ),
         DMOption(

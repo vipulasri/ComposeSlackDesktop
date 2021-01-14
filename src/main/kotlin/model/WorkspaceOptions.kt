@@ -23,7 +23,9 @@ data class DMOption(
 data class ChannelOption(
     val _id: Int,
     val _name: String,
-    val _image: String
+    val _image: String,
+    val createdBy: User,
+    val createdAt: Long
 ) : WorkspaceOption(_id, _name, _image, WorkspaceOptionType.Channel)
 
 data class WorkspaceOptionUiModel(
