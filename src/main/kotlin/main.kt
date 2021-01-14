@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntSize
 import data.WorkspaceOptionsRepository
 import data.WorkspacesRepository
 import theme.DarkColorPalette
@@ -19,6 +20,7 @@ import ui.SlackWorkspaceInfoBar
 
 fun main() = Window(
     title = "Slack Compose Desktop",
+    size = IntSize(1000, 720)
 ) {
     val darkTheme = savedInstanceState { true }
     MaterialTheme(
