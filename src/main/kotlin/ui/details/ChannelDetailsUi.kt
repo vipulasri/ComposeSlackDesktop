@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.unit.dp
 import data.PostsRepository
 import extensions.formatCreatedDate
+import extensions.formatTime
 import model.ChannelOption
 import model.Post
 import theme.LatoFontBoldFamily
@@ -28,7 +29,8 @@ fun ChannelDetailsUi(channel: ChannelOption) {
     val posts = PostsRepository.posts
     posts.forEachIndexed { index, post ->
         if (index == 0 ||
-            (posts[index.minus(1)].createdAt != post.createdAt)) {
+            (posts[index.minus(1)].createdAt != post.createdAt)
+        ) {
             DateDivider(post.createdAt)
         }
         PostUi(post)
@@ -80,13 +82,25 @@ private fun PostUi(post: Post) {
             modifier = Modifier.width(10.dp)
         )
         Column {
-            Text(
-                text = post.author.name,
-                color = Color.White,
-                style = MaterialTheme.typography.body2.copy(
-                    fontFamily = LatoFontBoldFamily
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = post.author.name,
+                    color = Color.White,
+                    style = MaterialTheme.typography.body2.copy(
+                        fontFamily = LatoFontBoldFamily
+                    )
                 )
-            )
+                Spacer(
+                    modifier = Modifier.width(10.dp)
+                )
+                Text(
+                    text = post.createdAt.formatTime(),
+                    color = SlackColors.grey,
+                    style = MaterialTheme.typography.caption
+                )
+            }
             Spacer(
                 modifier = Modifier.height(2.dp)
             )
