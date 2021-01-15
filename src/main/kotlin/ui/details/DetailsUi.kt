@@ -1,11 +1,13 @@
 package ui
 
 import Icons
+import VerticalDivider
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -18,10 +20,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import messageOptionsIcons
 import model.ChannelOption
 import model.DMOption
 import model.WorkspaceOption
 import model.WorkspaceOptionType
+import richTextIcons
 import theme.LatoFontBoldFamily
 import theme.SlackColors
 
@@ -35,7 +39,15 @@ fun SlackDetailsUi(option: WorkspaceOption) {
     ) {
         DetailsHeader(option)
         Divider()
-        ContentUi(option)
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            ContentUi(option)
+        }
+        ContentFooter(option)
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
     }
 }
 
@@ -71,6 +83,58 @@ private fun ContentUi(option: WorkspaceOption) {
         }
         is WorkspaceOptionType.DirectMessage -> {
 
+        }
+    }
+}
+
+@Composable
+private fun ContentFooter(option: WorkspaceOption) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .background(
+                color = SlackColors.black
+            )
+            .border(
+                width = 1.dp,
+                color = SlackColors.grey,
+                shape = RoundedCornerShape(4.dp)
+            ),
+    ) {
+        Text(
+            text = "Message ${option.name}",
+            color = SlackColors.grey,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.padding(12.dp)
+        )
+        Divider()
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FooterIcon(
+                modifier = Modifier.padding(horizontal = 4.dp),
+                image = Icons.lightning
+            )
+            VerticalDivider(
+                modifier = Modifier.height(25.dp)
+            )
+
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                richTextIcons.forEach { icon ->
+                    FooterIcon(image = icon)
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                messageOptionsIcons.forEach { icon ->
+                    FooterIcon(image = icon)
+                }
+            }
         }
     }
 }
@@ -133,6 +197,20 @@ private fun HeaderIcon(image: String) {
         bitmap = imageFromResource(image),
         colorFilter = ColorFilter(SlackColors.grey, BlendMode.SrcIn),
         modifier = Modifier.preferredSize(20.dp)
+    )
+}
+
+@Composable
+private fun FooterIcon(
+    modifier: Modifier = Modifier,
+    image: String
+) {
+    Image(
+        bitmap = imageFromResource(image),
+        colorFilter = ColorFilter(SlackColors.grey, BlendMode.SrcIn),
+        modifier = modifier
+            .padding(horizontal = 6.dp, vertical = 15.dp)
+            .preferredSize(16.dp)
     )
 }
 
