@@ -73,28 +73,20 @@ object WorkspaceOptionsRepository {
 
     private val directMessages = listOf(
         DMOption(
-            1,
-            "Slackbot",
-            "slackbot.png"
+            user = slackbotUser
         ),
         DMOption(
-            2,
-            "Vipul Asri",
-            "people/vipulasri.jpg",
+            user = currentUser,
             isOnline = true
         ),
         DMOption(
-            3,
-            "John Damon",
-            "people/person_2.jpg",
+            user = users[2],
             isOnline = true
         ),
         DMOption(
-            4,
-            "Matt Andrews",
-            "people/person_3.jpg",
+            user = users[3],
             isOnline = false
-        )
+        ),
     )
 
     val options = WorkspaceOptionUiModel(

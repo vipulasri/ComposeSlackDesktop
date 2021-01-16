@@ -33,3 +33,12 @@ val users = listOf(
         username = "tom-caprio"
     )
 )
+
+val currentUser = users.first()
+
+val slackbotUser = User(
+    id = 5,
+    name = "Slackbot",
+    image = "slackbot.png",
+    username = "slackbot"
+)

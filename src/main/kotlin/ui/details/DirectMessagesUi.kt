@@ -10,37 +10,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import data.PostsRepository
+import data.MessagesRepository
 import extensions.compareDates
-import extensions.formatCreatedDate
-import model.ChannelOption
+import model.DMOption
 import theme.LatoFontBoldFamily
 import ui.common.DateDivider
 
-
 @Composable
-fun ChannelDetailsUi(channel: ChannelOption) {
+fun DirectMessagesUi(dm: DMOption) {
     ScrollableColumn {
-        DMDetailsHeader(channel)
-        val posts = PostsRepository.posts
-        posts.forEachIndexed { index, post ->
+        DMDetailsHeader(dm)
+        val messages = MessagesRepository.getMessages(dm.user)
+        messages.forEachIndexed { index, message ->
             if (index == 0 ||
-                (compareDates(posts[index.minus(1)].createdAt, post.createdAt))
+                (compareDates(messages[index.minus(1)].createdAt, message.createdAt))
             ) {
-                DateDivider(post.createdAt)
+                DateDivider(message.createdAt)
             }
-            MessageUi(post)
+            MessageUi(message)
         }
     }
 }
 
 @Composable
-private fun DMDetailsHeader(channel: ChannelOption) {
+private fun DMDetailsHeader(dm: DMOption) {
     Spacer(
         modifier = Modifier.height(20.dp)
     )
     Text(
-        text = "# ${channel._name}",
+        text = "# ${dm.user.name}",
         color = Color.White,
         style = MaterialTheme.typography.h4.copy(
             fontFamily = LatoFontBoldFamily
@@ -51,8 +49,8 @@ private fun DMDetailsHeader(channel: ChannelOption) {
         modifier = Modifier.height(10.dp)
     )
     Text(
-        text = "@${channel.createdBy.username} created this channel on ${channel.createdAt.formatCreatedDate()}. " +
-                "This is the very beginning of the #${channel._name} channel.",
+        text = "@${dm.user.username} created this channel on. " +
+                "This is the very beginning of the #${dm.user.name} channel.",
         color = Color.White,
         style = MaterialTheme.typography.body1,
         modifier = Modifier.padding(horizontal = 20.dp)

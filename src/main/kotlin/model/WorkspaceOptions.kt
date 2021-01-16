@@ -14,11 +14,9 @@ sealed class WorkspaceOptionType {
 }
 
 data class DMOption(
-    val _id: Int,
-    val _name: String,
-    val _image: String,
+    val user: User,
     val isOnline: Boolean? = null
-) : WorkspaceOption(_id, _name, _image, WorkspaceOptionType.DirectMessage)
+) : WorkspaceOption(user.id, user.name, user.image, WorkspaceOptionType.DirectMessage)
 
 data class ChannelOption(
     val _id: Int,

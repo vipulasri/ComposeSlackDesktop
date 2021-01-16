@@ -16,3 +16,10 @@ fun Long.formatTime(): String {
     val formatter = DateTimeFormatter.ofPattern("hh:mm a")
     return date.format(formatter)
 }
+
+fun compareDates(dateMillis1: Long, dateMillis2: Long): Boolean {
+    val date1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateMillis1), ZoneId.systemDefault())
+    val date2 = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateMillis2), ZoneId.systemDefault())
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    return date1.format(formatter) != date2.format(formatter)
+}

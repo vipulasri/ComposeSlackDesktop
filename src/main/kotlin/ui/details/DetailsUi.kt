@@ -28,6 +28,8 @@ import model.WorkspaceOptionType
 import richTextIcons
 import theme.LatoFontBoldFamily
 import theme.SlackColors
+import ui.details.ChannelDetailsUi
+import ui.details.DirectMessagesUi
 
 @Composable
 fun SlackDetailsUi(option: WorkspaceOption) {
@@ -93,7 +95,7 @@ private fun ContentUi(option: WorkspaceOption) {
             ChannelDetailsUi(option as ChannelOption)
         }
         is WorkspaceOptionType.DirectMessage -> {
-
+            DirectMessagesUi(option as DMOption)
         }
     }
 }
