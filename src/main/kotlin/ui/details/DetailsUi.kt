@@ -69,6 +69,14 @@ private fun DetailsHeader(option: WorkspaceOption) {
                 fontWeight = FontWeight.Bold,
                 fontFamily = LatoFontBoldFamily
             ),
+        )
+        Image(
+            bitmap = imageFromResource(Icons.favorite),
+            colorFilter = ColorFilter.tint(SlackColors.grey),
+            modifier = Modifier.preferredSize(25.dp)
+                .padding(start = 10.dp)
+        )
+        Spacer(
             modifier = Modifier.weight(1f)
         )
         HeaderMenu(option)
