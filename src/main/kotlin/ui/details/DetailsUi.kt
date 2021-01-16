@@ -44,10 +44,13 @@ fun SlackDetailsUi(option: WorkspaceOption) {
         ) {
             ContentUi(option)
         }
-        ContentFooter(option)
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+
+        if (option.type != WorkspaceOptionType.General) {
+            ContentFooter(option)
+            Spacer(
+                modifier = Modifier.height(20.dp)
+            )
+        }
     }
 }
 
