@@ -154,8 +154,19 @@ private fun ContentFooter(option: WorkspaceOption) {
                 shape = RoundedCornerShape(4.dp)
             ),
     ) {
+
+        val name = when (option.type) {
+            is WorkspaceOptionType.Channel -> {
+                "#${option.name}"
+            }
+            is WorkspaceOptionType.DirectMessage -> {
+                option.name
+            }
+            else -> ""
+        }
+
         Text(
-            text = "Message ${option.name}",
+            text = "Message $name",
             color = SlackColors.grey,
             style = MaterialTheme.typography.body2,
             modifier = Modifier.padding(12.dp)
