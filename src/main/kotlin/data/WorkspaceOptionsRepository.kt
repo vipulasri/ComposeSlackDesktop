@@ -54,61 +54,74 @@ object WorkspaceOptionsRepository {
             1,
             "announcements",
             Icons.hash,
-            createdBy = users.first(),
+            createdBy = users.random(),
             createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             2,
             "intro",
             Icons.hash,
-            createdBy = users.first(),
+            createdBy = users.random(),
             createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             3,
             "general",
             Icons.hash,
-            createdBy = users.first(),
+            createdBy = users.random(),
             createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             4,
             "help",
             Icons.hash,
-            createdBy = users.first(),
+            createdBy = users.random(),
             createdAt = System.currentTimeMillis()
         ),
         ChannelOption(
             5,
             "random",
             Icons.hash,
-            createdBy = users.first(),
+            createdBy = users.random(),
             createdAt = System.currentTimeMillis()
         )
     )
 
-    private val directMessages = listOf(
-        DMOption(
-            user = slackbotUser
-        ),
-        DMOption(
-            user = currentUser,
-            isOnline = true
-        ),
-        DMOption(
-            user = users[2],
-            isOnline = true
-        ),
-        DMOption(
-            user = users[3],
-            isOnline = false
-        ),
-    )
+    private val directMessages: List<WorkspaceOption>
+        get() {
 
-    val options = WorkspaceOptionUiModel(
-        general = generalOptions,
-        channels = channels,
-        messages = directMessages
-    )
+            val randomUserSize = (1..4).random()
+            val randomUserList = users.shuffled().take(randomUserSize)
+
+            val messages: ArrayList<WorkspaceOption> = arrayListOf(
+                DMOption(
+                    user = slackbotUser
+                ),
+                DMOption(
+                    user = currentUser,
+                    isOnline = true
+                ),
+            )
+
+            randomUserList.forEach { user ->
+                messages.add(
+                    DMOption(
+                        user = user,
+                        isOnline = (Math.random() < 0.5)
+                    )
+                )
+            }
+
+            return messages
+        }
+
+    val options: WorkspaceOptionUiModel
+        get() {
+            return WorkspaceOptionUiModel(
+                general = generalOptions,
+                channels = channels,
+                messages = directMessages
+            )
+        }
 
 }
