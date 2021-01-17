@@ -3,7 +3,9 @@ A Slack demo app for desktop using Jetpack Compose UI toolkit
 
 ## Demo
 
-
+<p float="center">
+  <img src="art/ComposeSlackDesktop.gif" />
+</p>
 
 # Jetpack Compose
 
