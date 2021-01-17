@@ -31,6 +31,9 @@ fun main() = Window(
     }
 }
 
+val workspaces = WorkspacesRepository.workspaces
+var options = WorkspaceOptionsRepository.options
+
 @Composable
 private fun SlackApp() {
     Row(
@@ -38,10 +41,7 @@ private fun SlackApp() {
             color = MaterialTheme.colors.surface
         ).fillMaxSize()
     ) {
-        val workspaces = WorkspacesRepository.workspaces
         val selectedWorkspace = remember { mutableStateOf(workspaces.first()) }
-
-        val options = WorkspaceOptionsRepository.options
         val selectedOption = remember { mutableStateOf(options.channels.first()) }
 
         SlackWorkSpacesBar(
@@ -49,6 +49,7 @@ private fun SlackApp() {
             selectedWorkspace.value,
         ) {
             selectedWorkspace.value = it
+            options = WorkspaceOptionsRepository.options
             selectedOption.value = options.channels.first()
         }
 
