@@ -42,11 +42,97 @@ fun DirectMessagesUi(dm: DMOption) {
 
 @Composable
 private fun DMDetailsHeader(dm: DMOption) {
+    when (dm.user) {
+        slackbotUser -> SlackbotHeader(dm)
+        else -> UserHeader(dm)
+    }
+}
+
+@Composable
+private fun SlackbotHeader(dm: DMOption) {
     Spacer(
-        modifier = Modifier.height(20.dp)
+        modifier = Modifier.height(40.dp)
+    )
+    Text(
+        text = "Hi, Slackbot here!",
+        color = Color.White,
+        style = MaterialTheme.typography.h5.copy(
+            fontFamily = LatoFontBoldFamily
+        ),
+        modifier = Modifier.padding(horizontal = 20.dp)
+    )
+    Spacer(
+        modifier = Modifier.height(10.dp)
     )
     Row(
         Modifier.padding(horizontal = 20.dp)
+    ) {
+        Image(
+            bitmap = imageFromResource(dm.user.image),
+            modifier = Modifier.preferredSize(50.dp)
+                .clip(RoundedCornerShape(4.dp))
+        )
+        Spacer(
+            modifier = Modifier.width(10.dp)
+        )
+        Column {
+            Text(
+                text = "You’re here! Hello!",
+                color = Color.White,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+            Spacer(
+                modifier = Modifier.height(20.dp)
+            )
+            Text(
+                text = buildAnnotatedString {
+                    append("If you’re looking for help using Slack, click the question mark in the top right corner of the app, visit our")
+                    withStyle(
+                        SpanStyle(
+                            color = SlackColors.link
+                        )
+                    ) {
+                        append(" Help Center ")
+                    }
+                    append("or reach out to a human by typing /feedback in the message bar.")
+                },
+                color = Color.White,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+            Spacer(
+                modifier = Modifier.height(20.dp)
+            )
+            Text(
+                text = "I, however, am not a human. Just a bot (a simple bot, with only a few tricks up my metaphorical sleeve). But I’m still happy you’re here!",
+                color = Color.White,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+        }
+    }
+    Spacer(
+        modifier = Modifier.height(20.dp)
+    )
+}
+
+@Composable
+private fun UserHeader(dm: DMOption) {
+    Spacer(
+        modifier = Modifier.height(20.dp)
+    )
+    UserTitle(dm)
+    SubtitleText(dm)
+    Spacer(
+        modifier = Modifier.height(20.dp)
+    )
+}
+
+@Composable
+private fun UserTitle(dm: DMOption) {
+    Row(
+        Modifier.padding(horizontal = 20.dp, vertical = 20.dp)
     ) {
         Image(
             bitmap = imageFromResource(dm.user.image),
@@ -75,13 +161,6 @@ private fun DMDetailsHeader(dm: DMOption) {
             )
         }
     }
-    Spacer(
-        modifier = Modifier.height(20.dp)
-    )
-    SubtitleText(dm)
-    Spacer(
-        modifier = Modifier.height(20.dp)
-    )
 }
 
 @Composable

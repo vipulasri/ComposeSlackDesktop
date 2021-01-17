@@ -9,12 +9,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import data.PostsRepository
 import extensions.compareDates
 import extensions.formatCreatedDate
 import model.ChannelOption
 import theme.LatoFontBoldFamily
+import theme.SlackColors
 import ui.common.DateDivider
 
 
@@ -37,7 +41,7 @@ fun ChannelDetailsUi(channel: ChannelOption) {
 @Composable
 private fun DMDetailsHeader(channel: ChannelOption) {
     Spacer(
-        modifier = Modifier.height(20.dp)
+        modifier = Modifier.height(40.dp)
     )
     Text(
         text = "# ${channel._name}",
@@ -51,13 +55,24 @@ private fun DMDetailsHeader(channel: ChannelOption) {
         modifier = Modifier.height(10.dp)
     )
     Text(
-        text = "@${channel.createdBy.username} created this channel on ${channel.createdAt.formatCreatedDate()}. " +
-                "This is the very beginning of the #${channel._name} channel.",
+        text = buildAnnotatedString {
+            withStyle(
+                SpanStyle(
+                    color = SlackColors.link,
+                    background = SlackColors.linkBg
+                )
+            ) {
+                append("@${channel.createdBy.username}")
+            }
+            append(
+                " created this channel on ${channel.createdAt.formatCreatedDate()}. This is the very beginning of the #${channel._name} channel."
+            )
+        },
         color = Color.White,
         style = MaterialTheme.typography.body1,
         modifier = Modifier.padding(horizontal = 20.dp)
     )
     Spacer(
-        modifier = Modifier.height(20.dp)
+        modifier = Modifier.height(40.dp)
     )
 }

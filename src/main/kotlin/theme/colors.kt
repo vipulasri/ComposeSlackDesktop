@@ -20,7 +20,7 @@ object SlackColors {
     val optionSelected = Color(0xff5B7AA2)
     val detailsBg = Color(0xff1B1D21)
     val linkBg = Color(0xff1D2A32)
-    val link = Color(0xff4593C2)
+    val link = Color(0xff489ACC)
 }
 
 val DarkColorPalette = darkColors(
