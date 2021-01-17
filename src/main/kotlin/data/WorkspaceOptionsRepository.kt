@@ -17,11 +17,11 @@ object WorkspaceOptionsRepository {
                 message = "Threads you’re involved in will be collected right here."
             )
         ),
-        WorkspaceOption(
+        /*WorkspaceOption(
             id = 2,
             name = "All DMs",
             image = Icons.chat,
-        ),
+        ),*/
         WorkspaceOption(
             id = 3,
             name = "Mentions & reactions",
@@ -117,9 +117,12 @@ object WorkspaceOptionsRepository {
 
     val options: WorkspaceOptionUiModel
         get() {
+            val randomChannelSize = (2..5).random()
+            val randomChannels = channels.take(randomChannelSize)
+
             return WorkspaceOptionUiModel(
                 general = generalOptions,
-                channels = channels,
+                channels = randomChannels,
                 messages = directMessages
             )
         }
