@@ -40,15 +40,18 @@ private fun SlackApp() {
     ) {
         val workspaces = WorkspacesRepository.workspaces
         val selectedWorkspace = remember { mutableStateOf(workspaces.first()) }
+
+        val options = WorkspaceOptionsRepository.options
+        val selectedOption = remember { mutableStateOf(options.channels.first()) }
+
         SlackWorkSpacesBar(
             workspaces,
             selectedWorkspace.value,
         ) {
             selectedWorkspace.value = it
+            selectedOption.value = options.channels.first()
         }
 
-        val options = WorkspaceOptionsRepository.options
-        val selectedOption = remember { mutableStateOf(options.general.first()) }
         SlackWorkspaceInfoBar(
             workspace = selectedWorkspace.value,
             options = options,
