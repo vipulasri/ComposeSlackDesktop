@@ -35,6 +35,9 @@ fun ChannelDetailsUi(channel: ChannelOption) {
             }
             MessageUi(post)
         }
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
     }
 }
 

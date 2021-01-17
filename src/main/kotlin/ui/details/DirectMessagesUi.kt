@@ -37,6 +37,9 @@ fun DirectMessagesUi(dm: DMOption) {
             }
             MessageUi(message)
         }
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
     }
 }
 
