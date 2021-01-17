@@ -118,7 +118,7 @@ object WorkspaceOptionsRepository {
     val options: WorkspaceOptionUiModel
         get() {
             val randomChannelSize = (2..5).random()
-            val randomChannels = channels.take(randomChannelSize)
+            val randomChannels = channels.shuffled().take(randomChannelSize)
 
             return WorkspaceOptionUiModel(
                 general = generalOptions,

@@ -1,5 +1,6 @@
 package ui
 
+import Icons
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
@@ -10,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.unit.dp
 import model.Workspace
+import theme.SlackColors
 import theme.divider
 
 @Composable
@@ -61,5 +64,16 @@ fun SlackWorkSpacesBar(
         Spacer(
             modifier = Modifier.height(10.dp)
         )
+
+        if (workspace == workspaces.last()) {
+            Image(
+                modifier = Modifier
+                    .preferredSize(34.dp)
+                    .padding(6.dp),
+                bitmap = imageFromResource(Icons.add),
+                colorFilter = ColorFilter.tint(SlackColors.grey)
+            )
+        }
+
     }
 }

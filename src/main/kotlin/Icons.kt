@@ -28,6 +28,7 @@ object Icons {
     val underline = "richtext/underline.png"
     val unorderedlist = "richtext/unorderedlist.png"
     val favorite = "favorite.png"
+    val add = "add.png"
 }
 
 val richTextIcons = listOf(
