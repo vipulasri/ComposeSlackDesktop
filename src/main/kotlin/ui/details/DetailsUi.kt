@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import messageOptionsIcons
 import model.ChannelOption
@@ -89,7 +90,9 @@ private fun DetailsHeader(option: WorkspaceOption) {
 private fun ContentUi(option: WorkspaceOption) {
     when (option.type) {
         is WorkspaceOptionType.General -> {
-
+            if (option.emptyContent.title.isNotEmpty()) {
+                EmptyContent(option)
+            }
         }
         is WorkspaceOptionType.Channel -> {
             ChannelDetailsUi(option as ChannelOption)
@@ -97,6 +100,42 @@ private fun ContentUi(option: WorkspaceOption) {
         is WorkspaceOptionType.DirectMessage -> {
             DirectMessagesUi(option as DMOption)
         }
+    }
+}
+
+@Composable
+private fun EmptyContent(option: WorkspaceOption) {
+    Column(
+        modifier = Modifier.fillMaxHeight()
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            bitmap = imageFromResource(option.image),
+            modifier = Modifier.preferredSize(25.dp),
+            colorFilter = ColorFilter.tint(option.emptyContent.iconColor)
+        )
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+        Text(
+            text = option.emptyContent.title,
+            color = Color.White,
+            style = MaterialTheme.typography.body1.copy(
+                fontFamily = LatoFontBoldFamily
+            ),
+            textAlign = TextAlign.Center
+        )
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+        Text(
+            text = option.emptyContent.message,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.body2
+        )
     }
 }
 

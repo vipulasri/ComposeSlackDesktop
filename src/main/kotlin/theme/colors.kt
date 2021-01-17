@@ -21,6 +21,9 @@ object SlackColors {
     val detailsBg = Color(0xff1B1D21)
     val linkBg = Color(0xff1D2A32)
     val link = Color(0xff489ACC)
+    val emptyThread = Color(0xff8CBD58)
+    val emptyMention = Color(0xffCE5838)
+    val emptySaved = Color(0xffCE375C)
 }
 
 val DarkColorPalette = darkColors(
